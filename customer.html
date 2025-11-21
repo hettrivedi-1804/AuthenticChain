@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuthenticChain - Customer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.4/dist/web3.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.10/minified/html5-qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#faf5ff',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9'
+            },
+            secondary: {
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-900 via-violet-900 to-purple-900 text-slate-100">
+  <!-- Sidebar Navigation -->
+  <div class="fixed inset-y-0 left-0 w-72 bg-white/10 backdrop-blur-md border-r border-white/10 shadow-2xl z-50">
+    <!-- Logo Section -->
+    <div class="flex flex-col items-center p-6 border-b border-white/10">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 text-white shadow-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
+            <path d="M11.7 2.06a1 1 0 0 1 .6 0l6 2A1 1 0 0 1 19 5v6.27a8.5 8.5 0 0 1-3.2 6.62l-2.9 2.27a1.5 1.5 0 0 1-1.8 0l-2.9-2.27A8.5 8.5 0 0 1 5 11.27V5a1 1 0 0 1 .7-.94l6-2Z"/>
+            <path d="M16.28 9.22a.75.75 0 0 0-1.06-1.06l-3.72 3.72-1.22-1.22a.75.75 0 1 0-1.06 1.06l1.75 1.75c.3.3.77.3 1.06 0l4.25-4.25Z"/>
+          </svg>
+        </span>
+        <div>
+          <h1 class="text-xl font-bold leading-tight">AuthenticChain</h1>
+          <p class="text-xs text-slate-400 -mt-1">Product Verification</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="flex-1 p-4">
+      <div class="space-y-2">
+        <a href="customer.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow-lg hover:from-primary-700 hover:to-secondary-700 transition-all duration-200 transform hover:-translate-y-0.5">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+            <path d="M16.28 9.22a.75.75 0 0 0-1.06-1.06l-3.72 3.72-1.22-1.22a.75.75 0 1 0-1.06 1.06l1.75 1.75c.3.3.77.3 1.06 0l4.25-4.25Z"/>
+          </svg>
+          <span class="font-medium">Customer Portal</span>
+        </a>
+        <a href="owner.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5 text-slate-200 border border-white/10 backdrop-blur hover:bg-white/10 transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+            <path d="M13.06 7.94a1.5 1.5 0 0 1 2.12 0l.88.88a3.5 3.5 0 0 1 0 4.95l-2.83 2.83a3.5 3.5 0 0 1-4.95 0l-.88-.88a1.5 1.5 0 1 1 2.12-2.12l.88.88a.5.5 0 0 0 .71 0l2.83-2.83a.5.5 0 0 0 0-.71l-.88-.88a1.5 1.5 0 0 1 0-2.12Z"/>
+          </svg>
+          <span>Owner Dashboard</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Footer Info -->
+    <div class="p-4 border-t border-white/10">
+      <div class="text-xs text-slate-400 text-center">
+        <p>No wallet needed</p>
+        <p class="mt-1">© 2025 AuthenticChain</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="ml-72 min-h-screen">
+    <!-- Top Header (Optional - for breadcrumbs or user actions) -->
+    <header class="bg-white/5 backdrop-blur-md border-b border-white/10 p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-semibold">Customer Portal</h2>
+          <p class="text-sm text-slate-400">Verify product authenticity</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6 max-w-4xl">
+      <section class="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-2xl ring-1 ring-white/10">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="md:col-span-3 flex items-end gap-2">
+            <button id="uploadQrBtn" type="button" class="w-full md:w-auto px-5 py-2.5 bg-gradient-to-r from-primary-500 to-secondary-600 text-white rounded-lg hover:from-primary-600 hover:to-secondary-700 shadow-lg transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-400">
+              Upload QR Code
+            </button>
+            <input id="qrFileInput" type="file" accept="image/*" class="hidden" />
+          </div>
+        </div>
+        <div id="result" class="mt-4 text-sm"></div>
+        <div id="rpcWarning" class="mt-4 hidden p-3 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">
+          Unable to reach Ganache RPC at http://127.0.0.1:7545. Ensure Ganache is running.
+        </div>
+
+        <!-- Details Card -->
+        <div id="detailsCard" class="mt-4 hidden p-5 rounded-xl border border-white/10 bg-white/10 backdrop-blur-md shadow-2xl ring-1 ring-white/10 transition transform hover:-translate-y-0.5">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold">Product Details</h3>
+            <button id="downloadPdfBtn" class="px-3 py-1 text-xs bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded hover:from-primary-700 hover:to-secondary-700 shadow">Download PDF</button>
+          </div>
+          <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <div><span class="text-slate-400">Serial:</span> <span id="d_serial">—</span></div>
+            <div><span class="text-slate-400">Name:</span> <span id="d_name">—</span></div>
+            <div><span class="text-slate-400">Brand:</span> <span id="d_brand">—</span></div>
+            <div><span class="text-slate-400">Model:</span> <span id="d_model">—</span></div>
+            <div class="md:col-span-2"><span class="text-slate-400">Entered by:</span> <span id="d_enteredBy">—</span></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Hidden container for file-based QR decode -->
+    <div id="qrFileReader" class="hidden" aria-hidden="true"></div>
+  </div>
+
+  <script>
+    // ====== Contract ABI (embedded) ======
+    const CONTRACT_ABI = [
+      {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          { "indexed": true, "internalType": "string", "name": "serialNumber", "type": "string" },
+          { "indexed": false, "internalType": "string", "name": "productName", "type": "string" }
+        ],
+        "name": "ProductAdded",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [ { "internalType": "address", "name": "", "type": "address" } ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "string", "name": "serialNumber", "type": "string" },
+          { "internalType": "string", "name": "productName", "type": "string" }
+        ],
+        "name": "addProduct",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [ { "internalType": "string", "name": "serialNumber", "type": "string" } ],
+        "name": "getProduct",
+        "outputs": [ { "internalType": "string", "name": "", "type": "string" } ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ];
+
+    // ====== Replace after deployment ======
+    const CONTRACT_ADDRESS = "0x005a348Aa06EbbbE8655eA732d44EE876B773171";
+
+    const resultEl = document.getElementById('result');
+    const rpcWarning = document.getElementById('rpcWarning');
+
+    // Read-only provider via Ganache HTTP
+    let web3;
+    try {
+      web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'));
+    } catch (e) {
+      rpcWarning.classList.remove('hidden');
+    }
+
+    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+
+    // Verification logic as a function
+    async function verifySerial(serial) {
+      resultEl.className = 'mt-4 text-sm hidden px-4 py-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shadow';
+      try {
+        const name = await contract.methods.getProduct(serial).call();
+        if (!name) {
+          resultEl.textContent = 'Product not found.';
+          resultEl.classList.remove('hidden');
+          resultEl.classList.add('text-rose-300','bg-rose-500/10','border-rose-500/30');
+          const dc = document.getElementById('detailsCard');
+          if (dc) dc.classList.add('hidden');
+        } else {
+          resultEl.innerHTML = `<span class="font-semibold">Product:</span> ${name}`;
+          resultEl.classList.remove('hidden');
+          resultEl.classList.add('text-emerald-300','bg-emerald-500/10','border-emerald-500/30');
+          // Fill base details (name may be overridden by meta)
+          document.getElementById('d_serial').textContent = serial;
+          document.getElementById('d_name').textContent = name;
+          // Also show owner address as fallback for "Entered by"
+          try {
+            const contractOwner = await contract.methods.owner().call();
+            document.getElementById('d_enteredBy').textContent = contractOwner;
+          } catch {}
+          const dc2 = document.getElementById('detailsCard');
+          if (dc2) dc2.classList.remove('hidden');
+        }
+      } catch (err) {
+        console.error(err);
+        resultEl.textContent = 'Unable to fetch product. Ensure Ganache is running and address is correct.';
+        resultEl.classList.remove('hidden');
+        resultEl.classList.add('text-red-700','bg-red-50','border-red-200');
+        const dc3 = document.getElementById('detailsCard');
+        if (dc3) dc3.classList.add('hidden');
+      }
+    }
+
+    // Upload QR image decoding
+    const uploadQrBtn = document.getElementById('uploadQrBtn');
+    const qrFileInput = document.getElementById('qrFileInput');
+    uploadQrBtn.addEventListener('click', () => qrFileInput.click());
+    qrFileInput.addEventListener('change', async (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      try {
+        // Use a dedicated hidden container for file scanning
+        const temp = new Html5Qrcode('qrFileReader');
+        const decodedText = await temp.scanFile(file, true);
+        handleDecoded(decodedText);
+        await temp.clear();
+      } catch (err) {
+        console.warn('Html5Qrcode scanFile failed, trying jsQR fallback...', err);
+        const fallback = await decodeWithJsQR(file);
+        if (fallback) {
+          handleDecoded(fallback);
+        } else {
+          resultEl.textContent = 'Unable to read QR from image. Try a clearer PNG.';
+          resultEl.classList.remove('hidden');
+          resultEl.classList.add('text-red-700','bg-red-50','border-red-200');
+        }
+      } finally {
+        // reset input
+        qrFileInput.value = '';
+      }
+    });
+
+    async function decodeWithJsQR(file) {
+      try {
+        const imgDataUrl = await new Promise((resolve, reject) => {
+          const fr = new FileReader();
+          fr.onload = () => resolve(fr.result);
+          fr.onerror = reject;
+          fr.readAsDataURL(file);
+        });
+        const img = await new Promise((resolve, reject) => {
+          const i = new Image();
+          i.onload = () => resolve(i);
+          i.onerror = reject;
+          i.src = imgDataUrl;
+        });
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth || img.width;
+        canvas.height = img.naturalHeight || img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+        return code && code.data ? code.data : null;
+      } catch (e) {
+        console.error('jsQR fallback failed', e);
+        return null;
+      }
+    }
+
+    function handleDecoded(decodedText) {
+      try {
+        const url = new URL(decodedText);
+        const serialParam = url.searchParams.get('serial') || decodedText;
+        const metaParam = url.searchParams.get('meta');
+        if (metaParam) applyMeta(metaParam);
+        if (serialParam) {
+          verifySerial(serialParam);
+        }
+      } catch (_) {
+        // Not a URL; treat as raw serial
+        verifySerial(decodedText);
+      }
+    }
+
+    // Apply metadata (base64 JSON) to details panel
+    function applyMeta(metaParam) {
+      try {
+        const json = JSON.parse(decodeURIComponent(escape(atob(metaParam))));
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = (val ?? '—'); };
+        set('d_serial', json.serial);
+        set('d_name', json.name);
+        set('d_brand', json.brand);
+        set('d_model', json.model);
+        set('d_warrantyMonths', json.warrantyMonths);
+        set('d_sellerName', json.sellerName);
+        set('d_enteredBy', json.enteredBy);
+        const dc4 = document.getElementById('detailsCard');
+        if (dc4) dc4.classList.remove('hidden');
+      } catch (e) {
+        console.warn('Invalid meta payload');
+      }
+    }
+
+    // Download PDF
+    const pdfBtn = document.getElementById('downloadPdfBtn');
+    if (pdfBtn) pdfBtn.addEventListener('click', () => {
+      try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        let y = 10;
+        doc.setFontSize(16); doc.text('AuthenticChain - Product Details', 10, y); y += 8;
+        doc.setFontSize(11);
+        const getTxt = (id) => (document.getElementById(id)?.textContent || '—');
+        const pushIf = (arr, label, id) => { const el = document.getElementById(id); if (el) arr.push(`${label}: ${el.textContent}`); };
+        const lines = [];
+        pushIf(lines, 'Serial', 'd_serial');
+        pushIf(lines, 'Name', 'd_name');
+        pushIf(lines, 'Brand', 'd_brand');
+        pushIf(lines, 'Model', 'd_model');
+        pushIf(lines, 'Warranty (months)', 'd_warrantyMonths');
+        pushIf(lines, 'Seller/Shop', 'd_sellerName');
+        pushIf(lines, 'Entered by', 'd_enteredBy');
+        lines.forEach(l => { doc.text(l, 10, y); y += 7; });
+        const serial = document.getElementById('d_serial')?.textContent || 'product';
+        const file = `authenticchain_${serial}.pdf`;
+        doc.save(file);
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  </script>
+</body>
+</html>

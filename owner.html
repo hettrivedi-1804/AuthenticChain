@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuthenticChain - Owner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.4/dist/web3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#faf5ff',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9'
+            },
+            secondary: {
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-900 via-violet-900 to-purple-900 text-slate-100">
+  <!-- Sidebar Navigation -->
+  <div class="fixed inset-y-0 left-0 w-72 bg-white/10 backdrop-blur-md border-r border-white/10 shadow-2xl z-50">
+    <!-- Logo Section -->
+    <div class="flex flex-col items-center p-6 border-b border-white/10">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 text-white shadow-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
+            <path d="M13.06 7.94a1.5 1.5 0 0 1 2.12 0l.88.88a3.5 3.5 0 0 1 0 4.95l-2.83 2.83a3.5 3.5 0 0 1-4.95 0l-.88-.88a1.5 1.5 0 1 1 2.12-2.12l.88.88a.5.5 0 0 0 .71 0l2.83-2.83a.5.5 0 0 0 0-.71l-.88-.88a1.5 1.5 0 0 1 0-2.12Z"/>
+          </svg>
+        </span>
+        <div>
+          <h1 class="text-xl font-bold leading-tight">AuthenticChain</h1>
+          <p class="text-xs text-slate-400 -mt-1">Owner Dashboard</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="flex-1 p-4">
+      <div class="space-y-2">
+        <a href="customer.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5 text-slate-200 border border-white/10 backdrop-blur hover:bg-white/10 transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+            <path d="M16.28 9.22a.75.75 0 0 0-1.06-1.06l-3.72 3.72-1.22-1.22a.75.75 0 1 0-1.06 1.06l1.75 1.75c.3.3.77.3 1.06 0l4.25-4.25Z"/>
+          </svg>
+          <span>Customer Portal</span>
+        </a>
+        <a href="owner.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow-lg hover:from-primary-700 hover:to-secondary-700 transition-all duration-200 transform hover:-translate-y-0.5">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+            <path d="M13.06 7.94a1.5 1.5 0 0 1 2.12 0l.88.88a3.5 3.5 0 0 1 0 4.95l-2.83 2.83a3.5 3.5 0 0 1-4.95 0l-.88-.88a1.5 1.5 0 1 1 2.12-2.12l.88.88a.5.5 0 0 0 .71 0l2.83-2.83a.5.5 0 0 0 0-.71l-.88-.88a1.5 1.5 0 0 1 0-2.12Z"/>
+          </svg>
+          <span class="font-medium">Owner Dashboard</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Footer Info -->
+    <div class="p-4 border-t border-white/10">
+      <div class="text-xs text-slate-400 text-center">
+        <p>Blockchain enabled</p>
+        <p class="mt-1">© 2025 AuthenticChain</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="ml-72 min-h-screen">
+    <!-- Top Header -->
+    <header class="bg-white/5 backdrop-blur-md border-b border-white/10 p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-semibold">Owner Dashboard</h2>
+          <p class="text-sm text-slate-400">Manage your products on the blockchain</p>
+        </div>
+        <button id="connectBtn" class="px-4 py-2 bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-lg hover:from-primary-700 hover:to-secondary-700 shadow-lg transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-400">
+          Connect Wallet
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6">
+      <!-- Network Warning -->
+      <div id="networkWarning" class="mb-4 hidden p-3 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">
+        Please connect MetaMask to Ganache at http://127.0.0.1:7545.
+      </div>
+
+      <!-- Status Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="p-4 bg-white/10 backdrop-blur-md rounded-xl shadow-2xl ring-1 ring-white/10">
+          <p class="text-xs uppercase tracking-wide text-slate-400">Network</p>
+          <p class="mt-1 font-semibold text-slate-100">Ganache (Local)</p>
+        </div>
+        <div class="p-4 bg-white/10 backdrop-blur-md rounded-xl shadow-2xl ring-1 ring-white/10">
+          <p class="text-xs uppercase tracking-wide text-slate-400">Security</p>
+          <p class="mt-1 font-semibold text-slate-100">Owner-only writes</p>
+        </div>
+        <div class="p-4 bg-white/10 backdrop-blur-md rounded-xl shadow-2xl ring-1 ring-white/10">
+          <p class="text-xs uppercase tracking-wide text-slate-400">Data</p>
+          <p class="mt-1 font-semibold text-slate-100">On-chain storage</p>
+        </div>
+      </div>
+
+      <!-- Account Status -->
+      <section class="mb-6 p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-2xl ring-1 ring-white/10">
+        <div class="space-y-2">
+          <p><span class="font-semibold">Connected Account:</span> <span id="account">—</span></p>
+          <p><span class="font-semibold">Contract Owner:</span> <span id="owner">—</span></p>
+          <p id="ownerStatus" class="text-sm"></p>
+        </div>
+      </section>
+
+      <!-- Add Product Form -->
+      <section class="mb-6 p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-2xl ring-1 ring-white/10">
+        <div id="formWrap" class="hidden">
+          <h2 class="text-lg font-semibold mb-4">Add Product</h2>
+          <form id="addForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Serial Number</label>
+              <input id="serial" type="text" class="w-full border rounded-lg px-3 py-2 bg-white/5 border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-400" placeholder="e.g., SN123456" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Product Name</label>
+              <input id="name" type="text" class="w-full border rounded-lg px-3 py-2 bg-white/5 border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-400" placeholder="e.g., ACME Smart Speaker" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Brand</label>
+              <input id="brand" type="text" class="w-full border rounded-lg px-3 py-2 bg-white/5 border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-400" placeholder="e.g., ACME" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Model</label>
+              <input id="model" type="text" class="w-full border rounded-lg px-3 py-2 bg-white/5 border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-400" placeholder="e.g., X200" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Warranty (months)</label>
+              <input id="warrantyMonths" type="number" min="0" class="w-full border rounded-lg px-3 py-2 bg-white/5 border-white/10 text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-400" placeholder="e.g., 12" />
+            </div>
+
+            <div class="md:col-span-2 flex items-center gap-3">
+              <button class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-secondary-600 text-white rounded-lg hover:from-emerald-700 hover:to-secondary-700 shadow-lg transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400" type="submit">Add Product</button>
+              <p class="text-xs text-slate-400">Ensure serials are unique. Data is stored on-chain.</p>
+            </div>
+          </form>
+        </div>
+
+        <!-- Toast / Message -->
+        <div id="message" class="mt-4 text-sm hidden px-4 py-3 rounded-lg border bg-white shadow-sm"></div>
+      </section>
+
+      <!-- My Products -->
+      <section class="p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-2xl ring-1 ring-white/10">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold">My Products (Local)</h2>
+          <button id="clearLocalBtn" class="text-xs px-3 py-1 rounded border border-white/10 bg-white/5 text-slate-200 hover:bg-white/10 transition">Clear Local</button>
+        </div>
+        <p class="text-xs text-slate-400 mb-4">This list is stored in your browser for convenience and does not affect on-chain data.</p>
+        <div id="productList" class="grid gap-3"></div>
+      </section>
+
+      <!-- About Section -->
+      <section class="mt-6 p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-2xl ring-1 ring-white/10">
+        <h3 class="text-lg font-semibold mb-3">About AuthenticChain</h3>
+        <p class="text-sm text-slate-300 mb-3">AuthenticChain is a minimal, on-chain authenticity checker for local shops. Owners add products by serial and name on Ethereum (Ganache). Customers simply upload a QR to verify—no backend, no login.</p>
+        <ul class="text-sm text-slate-300 list-disc pl-5 space-y-1">
+          <li><span class="font-medium">On‑chain core:</span> Serial + Product Name stored in a Solidity contract.</li>
+          <li><span class="font-medium">Owner‑only writes:</span> Only the deployer account can add products.</li>
+          <li><span class="font-medium">QR modes:</span> Full (serial + metadata like brand/model/warranty) or Short (serial only).</li>
+          <li><span class="font-medium">Customer flow:</span> Upload QR to view chain data and metadata; download a PDF receipt.</li>
+          <li><span class="font-medium">Local chain:</span> Ganache at http://127.0.0.1:7545, deployed via Truffle.</li>
+        </ul>
+        <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
+          <span>Developed by <span class="font-medium">Het Trivedi</span></span>
+          <span>© 2025 AuthenticChain</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- QR Modal -->
+  <div id="qrModal" class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
+    <div class="bg-white/10 backdrop-blur-md p-6 rounded-xl w-full max-w-sm shadow-2xl ring-1 ring-white/10">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold">Product QR</h3>
+        <button id="closeQrModal" class="text-slate-300 hover:text-white">✕</button>
+      </div>
+      <p class="text-sm text-slate-300 mb-4">Scan this on the customer page to auto-fill and verify.</p>
+      <div id="qrContainer" class="flex items-center justify-center mb-4"></div>
+      <div class="flex items-center justify-between mb-3">
+        <p id="qrCaption" class="text-xs text-slate-300 truncate"></p>
+        <button id="downloadQrBtn" class="px-3 py-1 bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded hover:from-primary-700 hover:to-secondary-700 text-xs shadow">Download</button>
+      </div>
+      <div class="flex items-center gap-2">
+        <input id="qrShortToggle" type="checkbox" class="h-4 w-4 accent-primary-500">
+        <label for="qrShortToggle" class="text-sm text-slate-200">Short QR (serial only)</label>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ====== Contract ABI (embedded) ======
+    const CONTRACT_ABI = [
+      {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          { "indexed": true, "internalType": "string", "name": "serialNumber", "type": "string" },
+          { "indexed": false, "internalType": "string", "name": "productName", "type": "string" }
+        ],
+        "name": "ProductAdded",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [ { "internalType": "address", "name": "", "type": "address" } ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "string", "name": "serialNumber", "type": "string" },
+          { "internalType": "string", "name": "productName", "type": "string" }
+        ],
+        "name": "addProduct",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [ { "internalType": "string", "name": "serialNumber", "type": "string" } ],
+        "name": "getProduct",
+        "outputs": [ { "internalType": "string", "name": "", "type": "string" } ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ];
+
+    // ====== Replace after deployment ======
+    const CONTRACT_ADDRESS = "0x005a348Aa06EbbbE8655eA732d44EE876B773171";
+
+    const connectBtn = document.getElementById('connectBtn');
+    const accountEl = document.getElementById('account');
+    const ownerEl = document.getElementById('owner');
+    const ownerStatusEl = document.getElementById('ownerStatus');
+    const formWrap = document.getElementById('formWrap');
+    const addForm = document.getElementById('addForm');
+    const msgEl = document.getElementById('message');
+    const networkWarning = document.getElementById('networkWarning');
+
+    let web3;
+    let contract;
+    let selectedAccount;
+    const LOCAL_KEY = 'authenticchain_products_v1';
+    let localProducts = [];
+
+    async function ensureGanacheNetwork() {
+      try {
+        const chainId = await web3.eth.getChainId();
+        if (!chainId) {
+          networkWarning.classList.remove('hidden');
+        }
+      } catch (e) {
+        networkWarning.classList.remove('hidden');
+      }
+    }
+
+    async function initContract() {
+      contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+    }
+
+    async function refreshOwnerView() {
+      try {
+        const contractOwner = await contract.methods.owner().call();
+        ownerEl.textContent = contractOwner;
+        accountEl.textContent = selectedAccount || '—';
+
+        if (selectedAccount && contractOwner && selectedAccount.toLowerCase() === contractOwner.toLowerCase()) {
+          ownerStatusEl.textContent = 'You are the owner. You can add products.';
+          ownerStatusEl.className = 'text-sm text-green-400';
+          formWrap.classList.remove('hidden');
+        } else {
+          ownerStatusEl.textContent = 'You are not the owner. Product addition is disabled.';
+          ownerStatusEl.className = 'text-sm text-red-400';
+          formWrap.classList.add('hidden');
+        }
+      } catch (err) {
+        ownerEl.textContent = '—';
+        ownerStatusEl.textContent = 'Unable to read contract. Ensure address is correct and Ganache is running.';
+        ownerStatusEl.className = 'text-sm text-red-400';
+      }
+    }
+
+    async function connect() {
+      if (!window.ethereum) {
+        alert('MetaMask not detected. Please install MetaMask.');
+        return;
+      }
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        web3 = new Web3(window.ethereum);
+        const accounts = await web3.eth.getAccounts();
+        selectedAccount = accounts[0];
+        await ensureGanacheNetwork();
+        await initContract();
+        await refreshOwnerView();
+      } catch (err) {
+        console.error(err);
+        alert('Failed to connect wallet.');
+      }
+    }
+
+    connectBtn.addEventListener('click', connect);
+
+    addForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msgEl.className = 'mt-4 text-sm hidden px-4 py-3 rounded-lg border bg-white shadow-sm';
+      msgEl.textContent = '';
+      const serial = document.getElementById('serial').value.trim();
+      const name = document.getElementById('name').value.trim();
+      if (!serial || !name) {
+        msgEl.textContent = 'Please enter both serial number and product name.';
+        msgEl.classList.remove('hidden');
+        msgEl.classList.add('text-red-400','bg-red-500/10','border-red-500/30');
+        return;
+      }
+      try {
+        await contract.methods.addProduct(serial, name).send({ from: selectedAccount });
+        msgEl.textContent = 'Product added successfully.';
+        msgEl.classList.remove('hidden');
+        msgEl.classList.add('text-green-400','bg-green-500/10','border-green-500/30');
+        document.getElementById('serial').value = '';
+        document.getElementById('name').value = '';
+
+        // Update local list
+        addLocalProduct({
+          serial,
+          name,
+          brand: document.getElementById('brand')?.value || undefined,
+          model: document.getElementById('model')?.value || undefined,
+          warrantyMonths: document.getElementById('warrantyMonths')?.value || undefined,
+          enteredBy: (selectedAccount || '').toString()
+        });
+        renderLocalProducts();
+      } catch (err) {
+        console.error(err);
+        let text = 'Transaction failed.';
+        if (err && err.message) {
+          if (err.message.includes('Not the owner')) text = 'Not the owner.';
+          else if (err.message.includes('Product already exists')) text = 'Product already exists.';
+          else if (err.message.includes('Serial required')) text = 'Serial number required.';
+          else if (err.message.includes('Name required')) text = 'Product name required.';
+        }
+        msgEl.textContent = text;
+        msgEl.classList.remove('hidden');
+        msgEl.classList.add('text-red-400','bg-red-500/10','border-red-500/30');
+      }
+    });
+
+    // Auto-update when account changes
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', async (accounts) => {
+        selectedAccount = accounts[0];
+        accountEl.textContent = selectedAccount || '—';
+        await refreshOwnerView();
+      });
+      window.ethereum.on('chainChanged', () => window.location.reload());
+    }
+
+    // Local storage helpers
+    function loadLocalProducts() {
+      try {
+        const raw = localStorage.getItem(LOCAL_KEY);
+        localProducts = raw ? JSON.parse(raw) : [];
+      } catch { localProducts = []; }
+    }
+    function saveLocalProducts() {
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(localProducts));
+    }
+    function addLocalProduct(p) {
+      if (!p || !p.serial) return;
+      if (!localProducts.find(x => x.serial === p.serial)) {
+        localProducts.unshift(p);
+        saveLocalProducts();
+      }
+    }
+    function removeLocalProduct(serial) {
+      localProducts = localProducts.filter(x => x.serial !== serial);
+      saveLocalProducts();
+      renderLocalProducts();
+    }
+    function productCard(p) {
+      return `
+        <div class="p-4 rounded-xl bg-white/5 ring-1 ring-white/10 flex items-center justify-between shadow transition transform hover:-translate-y-0.5 hover:shadow-xl">
+          <div>
+            <div class="font-medium">${p.name}</div>
+            <div class="text-xs text-slate-400">Serial: ${p.serial}</div>
+            ${p.brand || p.model ? `<div class=\"text-xs text-slate-400\">${[p.brand,p.model].filter(Boolean).join(' • ')}</div>` : ''}
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="px-3 py-1 text-xs bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded hover:from-primary-700 hover:to-secondary-700 shadow transition" data-action="qr" data-serial="${p.serial}" data-name="${p.name}">QR</button>
+            <button class="px-3 py-1 text-xs rounded border border-white/10 bg-white/5 text-slate-200 hover:bg-white/10 transition" data-action="remove" data-serial="${p.serial}">Remove</button>
+          </div>
+        </div>`;
+    }
+    function renderLocalProducts() {
+      const wrap = document.getElementById('productList');
+      wrap.innerHTML = localProducts.length ? localProducts.map(productCard).join('') : '<p class="text-sm text-slate-400">No local products yet. Add one above.</p>';
+
+      wrap.querySelectorAll('button[data-action]')?.forEach(btn => {
+        const action = btn.getAttribute('data-action');
+        const serial = btn.getAttribute('data-serial');
+        const name = btn.getAttribute('data-name');
+        if (action === 'qr') btn.addEventListener('click', () => openQr(serial, name));
+        if (action === 'remove') btn.addEventListener('click', () => removeLocalProduct(serial));
+      });
+    }
+
+    // QR generation
+    let qrInstance;
+    let qrCurrent = null;
+    function openQr(serial, name) {
+      const modal = document.getElementById('qrModal');
+      const container = document.getElementById('qrContainer');
+      const caption = document.getElementById('qrCaption');
+      container.innerHTML = '';
+
+      const saved = localProducts.find(x => x.serial === serial) || {};
+      const meta = {
+        serial,
+        name,
+        brand: saved.brand ?? (document.getElementById('brand')?.value || undefined),
+        model: saved.model ?? (document.getElementById('model')?.value || undefined),
+        warrantyMonths: saved.warrantyMonths ?? (document.getElementById('warrantyMonths')?.value || undefined),
+        enteredBy: (selectedAccount || '').toString()
+      };
+      qrCurrent = { serial, name, meta, short: false };
+
+      const shortToggle = document.getElementById('qrShortToggle');
+      shortToggle.checked = false;
+      renderQr();
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      const downloadBtn = document.getElementById('downloadQrBtn');
+      downloadBtn.onclick = () => downloadQr(qrCurrent.serial, shortToggle.checked);
+      shortToggle.onchange = () => {
+        qrCurrent.short = shortToggle.checked;
+        renderQr();
+      };
+    }
+    function buildQrUrl() {
+      if (!qrCurrent) return '';
+      const base = `${window.location.origin}/customer.html?serial=${encodeURIComponent(qrCurrent.serial)}`;
+      if (qrCurrent.short) return base;
+      const metaParam = btoa(unescape(encodeURIComponent(JSON.stringify(qrCurrent.meta))));
+      return `${base}&meta=${encodeURIComponent(metaParam)}`;
+    }
+    function renderQr() {
+      const container = document.getElementById('qrContainer');
+      const caption = document.getElementById('qrCaption');
+      container.innerHTML = '';
+      const url = buildQrUrl();
+      caption.textContent = url;
+      qrInstance = new QRCode(container, {
+        text: url,
+        width: 320,
+        height: 320,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+    function closeQr() {
+      const modal = document.getElementById('qrModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+    function downloadQr(serial, isShort) {
+      const img = document.querySelector('#qrContainer img');
+      const canvas = document.querySelector('#qrContainer canvas');
+      const dataUrl = img ? img.src : (canvas ? canvas.toDataURL('image/png') : null);
+      if (!dataUrl) return;
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = `authenticchain_${serial}${isShort ? '_short' : ''}.png`;
+      a.click();
+    }
+
+    document.getElementById('closeQrModal').addEventListener('click', closeQr);
+    document.getElementById('clearLocalBtn').addEventListener('click', () => {
+      if (confirm('Clear local product list? This does not affect on-chain data.')) {
+        localProducts = [];
+        saveLocalProducts();
+        renderLocalProducts();
+      }
+    });
+
+    // Init
+    loadLocalProducts();
+    renderLocalProducts();
+  </script>
+</body>
+</html>
